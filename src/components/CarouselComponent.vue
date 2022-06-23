@@ -56,7 +56,20 @@ document.addEventListener('mousemove', (e) => {
 </script>
 
 <template>
-    <h1>Crear el array que tendrá los testimonios</h1>
+    <section id="widget-testimonials" style="background-color: #eee">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-12 col-md-4 bg-dark py-3 py-md-0 text-center ">
+                    <img :src="testimonials[0].image.url" alt="Testimonial image" class="img-fluid rounded">
+                </div>
+                <div class="col-12 col-md-8 bg-secondary p-3 p-md-5">
+                    <h3>Nuestros clientes dicen...</h3>
+                    <p>{{ testimonials[0].testimony }}</p>
+                    <p>{{ testimonials[0].author }}</p>
+                </div>
+            </div>
+        </div>
+    </section>
 </template>
 
 <style scoped>
