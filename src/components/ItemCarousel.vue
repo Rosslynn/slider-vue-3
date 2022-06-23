@@ -37,6 +37,7 @@ function determineTranslateInX() {
 .item-carousel {
     user-select: none;
     cursor: pointer;
+    /* transition: all ease .5s; */
 }
 
 .set-position {

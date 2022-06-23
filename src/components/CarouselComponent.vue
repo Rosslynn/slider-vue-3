@@ -1,8 +1,8 @@
 <script setup>
-import { onMounted, onUnmounted, onUpdated, ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 
 import ItemCarousel from './ItemCarousel.vue';
-import { getSpecificElementLimits } from '../utils/getSpecificElementLimits';
+import { getSpecificElementLimits, translateSlideInX } from '../utils/HTMLElements';
 
 const testimonials = ref([
     {
@@ -83,44 +83,22 @@ function mouseIsBeingClicked(e) {
 }
 
 /**
- * Función que toma un objeto y obtiene los valores de la propiedad translate3d
- * @param {Object} el - Elemento a obtener su posición 3d XYZ
- */
-function getTranslate3d(el) {
-    const values = el.style.transform.split(/\w+\(|\);?/);
-    if (!values[1] || !values[1].length) {
-        return [];
-    }
-    return values[1].split(/,\s?/g);
-}
-/**
  * Función ejecutada cuando el usuario mueve el mouse sobre las sliders
  * @param {Object} e - Referencia al objeto que se le añade el eventListener
  */
 function validateMouseMove(e) {
 
     if (e.pageX < oldValueX.value && isMouseClicked.value) {
-        for (let slide of carouselSlides) {
-            const [x] = getTranslate3d(slide);
-            const [number] = x.split('px');
-            slide.style.transform = `translate3d(${Number(number) - 1}px, 0px,0px )`;
-        }
-
-        /*  this.style.transform = `translate3d(${Number(number) - 1}px, 0px,0px )`; */
+        translateSlideInX(carouselSlides, 'subtract');
         direction.value = 'left';
     }
 
     if (e.pageX > oldValueX.value && isMouseClicked.value) {
-        for (let slide of carouselSlides) {
-            const [x] = getTranslate3d(slide);
-            const [number] = x.split('px');
-            slide.style.transform = `translate3d(${Number(number) + 1}px, 0px,0px )`;
-        }
+        translateSlideInX(carouselSlides, 'add');
         direction.value = 'right';
     }
 
     if (isMouseClicked.value) {
-
         console.log(direction.value);
     }
 
