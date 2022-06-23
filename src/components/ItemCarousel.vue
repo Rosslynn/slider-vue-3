@@ -36,6 +36,7 @@ function determineTranslateInX() {
 <style scoped>
 .item-carousel {
     user-select: none;
+    cursor: pointer;
 }
 
 .set-position {

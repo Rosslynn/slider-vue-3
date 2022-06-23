@@ -28,7 +28,7 @@ const testimonials = ref([
 ]);
 
 let direction = ref('');
-let actualPositionX = ref(null);
+let oldValueX = ref(null);
 let isMouseClicked = ref(false);
 let containerCarouselWidth = ref(0);
 let isAbsolute = ref(true);
@@ -77,31 +77,46 @@ function mouseIsNotBeingClicked() {
 /**
  * Función ejecutada cuando el usuario presiona un slide
  */
-function mouseIsBeingClicked() {
+function mouseIsBeingClicked(e) {
     isMouseClicked.value = true;
     console.log('Document is NOT being clicked');
 }
 
 /**
+ * Función que toma un objeto y obtiene los valores de la propiedad translate3d
+ * @param {Object} el - Elemento a obtener su posición 3d XYZ
+ */
+function getTranslate3d(el) {
+    const values = el.style.transform.split(/\w+\(|\);?/);
+    if (!values[1] || !values[1].length) {
+        return [];
+    }
+    return values[1].split(/,\s?/g);
+}
+/**
  * Función ejecutada cuando el usuario mueve el mouse sobre las sliders
  * @param {Object} e - Referencia al objeto que se le añade el eventListener
  */
 function validateMouseMove(e) {
-    if (e.pageX < actualPositionX && isMouseClicked.value) {
+    const [x] = getTranslate3d(this);
+    const [number] = x.split('px');
+
+    if (e.pageX < oldValueX.value && isMouseClicked.value) {
+        this.style.transform = `translate3d(${Number(number) - 1}px, 0px,0px )`;
         direction.value = 'left';
     }
 
-    if (e.pageX > actualPositionX && isMouseClicked.value) {
+    if (e.pageX > oldValueX.value && isMouseClicked.value) {
+        this.style.transform = `translate3d(${Number(number) + 1}px, 0px,0px )`;
         direction.value = 'right';
     }
 
     if (isMouseClicked.value) {
-        actualPositionX = e.pageX;
-        console.log({
-            x: e.pageX,
-            direction: direction.value
-        });
+
+        console.log(direction.value);
     }
+
+    oldValueX.value = e.pageX;
 }
 
 </script>
