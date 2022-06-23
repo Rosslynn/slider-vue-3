@@ -98,16 +98,24 @@ function getTranslate3d(el) {
  * @param {Object} e - Referencia al objeto que se le añade el eventListener
  */
 function validateMouseMove(e) {
-    const [x] = getTranslate3d(this);
-    const [number] = x.split('px');
 
     if (e.pageX < oldValueX.value && isMouseClicked.value) {
-        this.style.transform = `translate3d(${Number(number) - 1}px, 0px,0px )`;
+        for (let slide of carouselSlides) {
+            const [x] = getTranslate3d(slide);
+            const [number] = x.split('px');
+            slide.style.transform = `translate3d(${Number(number) - 1}px, 0px,0px )`;
+        }
+
+        /*  this.style.transform = `translate3d(${Number(number) - 1}px, 0px,0px )`; */
         direction.value = 'left';
     }
 
     if (e.pageX > oldValueX.value && isMouseClicked.value) {
-        this.style.transform = `translate3d(${Number(number) + 1}px, 0px,0px )`;
+        for (let slide of carouselSlides) {
+            const [x] = getTranslate3d(slide);
+            const [number] = x.split('px');
+            slide.style.transform = `translate3d(${Number(number) + 1}px, 0px,0px )`;
+        }
         direction.value = 'right';
     }
 
