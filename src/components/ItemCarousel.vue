@@ -21,4 +21,7 @@ defineProps({
 </template>
 
 <style scoped>
-</style>
+.item-carousel {
+    z-index: 9999 !important;
+}
+</style> 

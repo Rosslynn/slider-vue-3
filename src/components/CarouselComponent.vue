@@ -64,14 +64,42 @@ document.addEventListener('mousemove', (e) => {
 
 <template>
     <section id="widget-testimonials">
-        <div class="container">
-            <ItemCarousel v-for="testimonial in testimonials" :key="testimonial.meta.uuid" :testimonial="testimonial"></ItemCarousel>
+        <div class="container position-relative overflow-hidden">
+            <ItemCarousel v-for="testimonial in testimonials" :key="testimonial.meta.uuid" :testimonial="testimonial">
+            </ItemCarousel>
         </div>
     </section>
 </template>
 
 <style scoped>
-    #widget-testimonials {
-        background-color: #eee;
+#widget-testimonials {
+    background-color: #eee;
+    position: relative;
+}
+
+
+#widget-testimonials:after {
+    content: '';
+    display: block;
+    position: absolute;
+    background-image: url(https://cloud.modyocdn.com/uploads/1e3588d5-1d5b-4ddb-b73d-77d88e1e37b1/original/pattern_circle.png);
+    background-position: top left;
+    width: 30%;
+    height: 55%;
+    top: 10%;
+    left: 0;
+    z-index: 1;
+}
+
+ .container {
+    z-index: 2;
+}
+
+@media (max-width: 768px) {
+    #widget-testimonials:after {
+        width: 50%;
+        height: 30%;
+        top: 20%;
     }
+}
 </style>
