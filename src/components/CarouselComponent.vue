@@ -1,5 +1,6 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, onUnmounted, onUpdated, ref } from 'vue';
+
 import ItemCarousel from './ItemCarousel.vue';
 import { getSpecificElementLimits } from '../utils/getSpecificElementLimits';
 
@@ -31,6 +32,7 @@ let actualPositionX = ref(null);
 let isMouseClicked = ref(false);
 let containerCarouselWidth = ref(0);
 let isAbsolute = ref(true);
+let carouselSlides = undefined;
 
 onMounted(() => {
     /* Contenedor de los slides */
@@ -39,47 +41,68 @@ onMounted(() => {
     containerCarouselWidth.value = width;
 
     /* Slides */
-    const carouselSlides = document.querySelectorAll('.item-carousel.set-position');
+    carouselSlides = document.querySelectorAll('.item-carousel.set-position');
 
     for (let slide of carouselSlides) {
-        slide.addEventListener('mouseout', (e) => {
-            isMouseClicked.value = false;
-            console.log('Document is NOT being clicked');
-        });
+        slide.addEventListener('mouseout', mouseIsNotBeingClicked);
 
-        slide.addEventListener('mousedown', (e) => {
-            isMouseClicked.value = true;
-            console.log('Document is being clicked');
-        });
+        slide.addEventListener('mousedown', mouseIsBeingClicked);
 
-        slide.addEventListener('mouseup', (e) => {
-            isMouseClicked.value = false;
-            console.log('Document is NOT being clicked');
-        });
+        slide.addEventListener('mouseup', mouseIsNotBeingClicked);
 
-        slide.addEventListener('mousemove', (e) => {
-
-            if (e.pageX < actualPositionX && isMouseClicked.value) {
-                direction.value = 'moving to left';
-            }
-
-            if (e.pageX > actualPositionX && isMouseClicked.value) {
-                direction.value = 'moving to right';
-            }
-
-            if (isMouseClicked.value) {
-                actualPositionX = e.pageX;
-                console.log({
-                    x: e.pageX,
-                    direction: direction.value
-                });
-            }
-
-        });
+        slide.addEventListener('mousemove', validateMouseMove);
     }
 });
 
-//TODO: añadir removeEventListener de lo que aplique
+onUnmounted(() => {
+    for (let slide of carouselSlides) {
+        slide.removeEventListener('mouseout', mouseIsNotBeingClicked);
+
+        slide.removeEventListener('mousedown', mouseIsBeingClicked);
+
+        slide.removeEventListener('mouseup', mouseIsNotBeingClicked);
+
+        slide.removeEventListener('mousemove', validateMouseMove);
+    }
+});
+
+/**
+ * Función ejecutada cuando el usuario deja de hacer clic sobre un slide
+ */
+function mouseIsNotBeingClicked() {
+    isMouseClicked.value = false;
+    console.log('Document is NOT being clicked');
+}
+
+/**
+ * Función ejecutada cuando el usuario presiona un slide
+ */
+function mouseIsBeingClicked() {
+    isMouseClicked.value = true;
+    console.log('Document is NOT being clicked');
+}
+
+/**
+ * Función ejecutada cuando el usuario mueve el mouse sobre las sliders
+ * @param {Object} e - Referencia al objeto que se le añade el eventListener
+ */
+function validateMouseMove(e) {
+    if (e.pageX < actualPositionX && isMouseClicked.value) {
+        direction.value = 'left';
+    }
+
+    if (e.pageX > actualPositionX && isMouseClicked.value) {
+        direction.value = 'right';
+    }
+
+    if (isMouseClicked.value) {
+        actualPositionX = e.pageX;
+        console.log({
+            x: e.pageX,
+            direction: direction.value
+        });
+    }
+}
 
 </script>
 
