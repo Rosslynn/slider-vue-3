@@ -1,8 +1,12 @@
 <script setup>
 import { onMounted, ref } from 'vue';
+import ItemCarousel from './ItemCarousel.vue';
 
 const testimonials = ref([
     {
+        meta: {
+            uuid: 'baa151b6-5038-4808-be2b-5f80cda01ea3'
+        },
         author: 'Raúl Diaz',
         image: {
             url: 'https://cloud.modyocdn.com/uploads/fdd876ff-70ff-459f-9bf3-2e48fece6439/original/raul.png'
@@ -10,6 +14,9 @@ const testimonials = ref([
         testimony: 'Me acerqué a Dynamic Bank, obtuve mi crédito y ya estoy solicitando el tercero. De verdad le doy gracias por confiar en mí\n'
     },
     {
+        meta: {
+            uuid: '5b2dae54-0825-41fb-9984-451af614dccc'
+        },
         author: 'Adriana Pérez',
         image: {
             url: 'https://cloud.modyocdn.com/uploads/2a0ade06-c77d-4b05-a6c8-bcfa4fa2bedf/original/adriana.png'
@@ -56,21 +63,15 @@ document.addEventListener('mousemove', (e) => {
 </script>
 
 <template>
-    <section id="widget-testimonials" style="background-color: #eee;">
+    <section id="widget-testimonials">
         <div class="container">
-            <div class="row align-items-center px-5 carousel-item">
-                <div class="col-12 col-md-4 py-3 py-md-0 text-center">
-                    <img :src="testimonials[0].image.url" alt="Testimonial image" class="img-fluid rounded">
-                </div>
-                <div class="col-12 col-md-8 p-3 p-md-5">
-                    <h3 class="text-dark">Nuestros clientes dicen...</h3>
-                    <p class="my-4 text-muted">{{ testimonials[0].testimony }}</p>
-                    <p class="font-weight-bold">{{ testimonials[0].author }}</p>
-                </div>
-            </div>
+            <ItemCarousel v-for="testimonial in testimonials" :key="testimonial.meta.uuid" :testimonial="testimonial"></ItemCarousel>
         </div>
     </section>
 </template>
 
 <style scoped>
+    #widget-testimonials {
+        background-color: #eee;
+    }
 </style>
