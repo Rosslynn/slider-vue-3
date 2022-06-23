@@ -29,42 +29,54 @@ let direction = ref('');
 let actualPositionX = ref(null);
 let isMouseClicked = ref(false);
 
-document.addEventListener('mousedown', (e) => {
-    isMouseClicked.value = true;
-    console.log('Document is being clicked');
-});
 
-document.addEventListener('mouseup', (e) => {
-    isMouseClicked.value = false;
-    console.log('Document is NOT being clicked');
-});
+onMounted(() => {
+    const containerCarousel = document.querySelector('#container-carousel');
+    const widgetTestimonials = document.querySelector('#widget-testimonials');
 
+     widgetTestimonials.addEventListener('mouseover', (e) => {
+        isMouseClicked.value = false;
+        console.log('Document is NOT being clicked');
+    });
 
+    containerCarousel.addEventListener('mousedown', (e) => {
+        isMouseClicked.value = true;
+        console.log('Document is being clicked');
+    });
 
-document.addEventListener('mousemove', (e) => {
+    containerCarousel.addEventListener('mouseup', (e) => {
+        isMouseClicked.value = false;
+        console.log('Document is NOT being clicked');
+    });
 
-    if (e.pageX < actualPositionX && isMouseClicked.value) {
-        direction.value = 'moving to left';
-    }
+    containerCarousel.addEventListener('mousemove', (e) => {
 
-    if (e.pageX > actualPositionX && isMouseClicked.value) {
-        direction.value = 'moving to right';
-    }
+        if (e.pageX < actualPositionX && isMouseClicked.value) {
+            direction.value = 'moving to left';
+        }
 
-    if (isMouseClicked.value) {
-        actualPositionX = e.pageX;
-        console.log({
-            x: e.pageX,
-            direction: direction.value
-        });
-    }
+        if (e.pageX > actualPositionX && isMouseClicked.value) {
+            direction.value = 'moving to right';
+        }
 
+        if (isMouseClicked.value) {
+            actualPositionX = e.pageX;
+            console.log({
+                x: e.pageX,
+                direction: direction.value
+            });
+        }
+
+    });
+
+    let { width } = containerCarousel.getBoundingClientRect();
+    console.log({ width  });
 });
 </script>
 
 <template>
     <section id="widget-testimonials">
-        <div class="container position-relative overflow-hidden">
+        <div class="container position-relative overflow-hidden" id="container-carousel">
             <ItemCarousel v-for="testimonial in testimonials" :key="testimonial.meta.uuid" :testimonial="testimonial">
             </ItemCarousel>
         </div>
@@ -72,11 +84,15 @@ document.addEventListener('mousemove', (e) => {
 </template>
 
 <style scoped>
+
+#container-carousel {
+    border: 1px solid red;
+}
+
 #widget-testimonials {
     background-color: #eee;
     position: relative;
 }
-
 
 #widget-testimonials:after {
     content: '';
@@ -91,7 +107,7 @@ document.addEventListener('mousemove', (e) => {
     z-index: 1;
 }
 
- .container {
+.container {
     z-index: 2;
 }
 
