@@ -17,6 +17,42 @@ const testimonials = ref([
         testimony: 'Me siento muy bien con Dynamic Bank, porque me dieron la oportunidad de crecer como comerciante y tengo otros proyectos en mente para seguir creciendo.\n'
     },
 ]);
+
+let direction = ref('');
+let actualPositionX = ref(null);
+let isMouseClicked = ref(false);
+
+document.addEventListener('mousedown', (e) => {
+    isMouseClicked.value = true;
+    console.log('Document is being clicked');
+});
+
+document.addEventListener('mouseup', (e) => {
+    isMouseClicked.value = false;
+    console.log('Document is NOT being clicked');
+});
+
+
+
+document.addEventListener('mousemove', (e) => {
+
+    if (e.pageX < actualPositionX && isMouseClicked.value) {
+        direction.value = 'moving to left';
+    }
+
+    if (e.pageX > actualPositionX && isMouseClicked.value) {
+        direction.value = 'moving to right';
+    }
+
+    if (isMouseClicked.value) {
+        actualPositionX = e.pageX;
+        console.log({
+            x: e.pageX,
+            direction: direction.value
+        });
+    }
+
+});
 </script>
 
 <template>
