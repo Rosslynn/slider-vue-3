@@ -28,13 +28,16 @@ const testimonials = ref([
 let direction = ref('');
 let actualPositionX = ref(null);
 let isMouseClicked = ref(false);
+let containerCarouselWidth = ref(0);
+let isAbsolute = ref(true);
 
 
 onMounted(() => {
     const containerCarousel = document.querySelector('#container-carousel');
     const widgetTestimonials = document.querySelector('#widget-testimonials');
 
-     widgetTestimonials.addEventListener('mouseover', (e) => {
+    widgetTestimonials.addEventListener('mouseover', (e) => {
+        e.stopImmediatePropagation();
         isMouseClicked.value = false;
         console.log('Document is NOT being clicked');
     });
@@ -70,23 +73,31 @@ onMounted(() => {
     });
 
     let { width } = containerCarousel.getBoundingClientRect();
-    console.log({ width  });
+    containerCarouselWidth.value = width;
 });
+
+//TODO: añadir removeEventListener de lo que aplique
+
 </script>
 
 <template>
     <section id="widget-testimonials">
         <div class="container position-relative overflow-hidden" id="container-carousel">
-            <ItemCarousel v-for="testimonial in testimonials" :key="testimonial.meta.uuid" :testimonial="testimonial">
+            <div style="visibility: hidden;">
+                <ItemCarousel :testimonial="testimonials[0]" :translateX="{ containerCarouselWidth, index: 0 }">
+                </ItemCarousel>
+            </div>
+            <ItemCarousel v-model.isAbsolute="isAbsolute" v-for="(testimonial, index) in testimonials"
+                :key="testimonial.meta.uuid" :testimonial="testimonial" :translateX="{ containerCarouselWidth, index }">
             </ItemCarousel>
         </div>
     </section>
 </template>
 
 <style scoped>
-
 #container-carousel {
     border: 1px solid red;
+    z-index: 9999999 !important;
 }
 
 #widget-testimonials {
@@ -106,7 +117,6 @@ onMounted(() => {
     left: 0;
     z-index: 1;
 }
-
 .container {
     z-index: 2;
 }

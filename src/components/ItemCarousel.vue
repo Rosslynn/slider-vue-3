@@ -1,14 +1,27 @@
 <script setup>
-defineProps({ 
+import { onMounted, ref } from 'vue';
+
+const props = defineProps({
     testimonial: {
         type: Object,
         required: true
-    }
-})
+    },
+    translateX: {
+        type: Object,
+        required: true
+    },
+    modelModifiers: { defaults: () => { } }
+});
+
+function determineTranslateInX() {
+    return props.translateX.containerCarouselWidth * props.translateX.index;
+}
+
 </script>
 
 <template>
-    <div class="row align-items-center px-5 item-carousel">
+    <div class="row align-items-center px-5 item-carousel" :class="{ 'set-position': props.modelModifiers?.isAbsolute }"
+        :style="{ 'transform': `translate3d(${determineTranslateInX()}px, 0px, 0px)` }">
         <div class="col-12 col-md-4 py-3 py-md-0 text-center">
             <img :src="testimonial.image.url" alt="Testimonial image" class="img-fluid rounded">
         </div>
@@ -22,6 +35,11 @@ defineProps({
 
 <style scoped>
 .item-carousel {
-    z-index: 9999 !important;
+    user-select: none;
+}
+
+.set-position {
+    position: absolute;
+    top: 0;
 }
 </style> 
