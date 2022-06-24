@@ -61,22 +61,16 @@ onMounted(() => {
     const containerCarousel = document.querySelector('#container-carousel');
     const { width } = getSpecificElementLimits(containerCarousel);
     containerCarouselWidth.value = width;
-
-    /* Slides 
     carouselSlides = document.querySelectorAll('.item-carousel.set-position');
+
+  /*   Slides  */
 
 
     for (let slide of carouselSlides) {
         slide.style.transition = 'all ease .5s';
-        slide.addEventListener('mouseout', mouseIsNotBeingClicked);
-
-        slide.addEventListener('mousedown', mouseIsBeingClicked);
-
-        slide.addEventListener('mouseup', mouseIsNotBeingClicked);
-
-        slide.addEventListener('mousemove', validateMouseMove);
+     
     }
-    */
+   
 });
 
 /* onUnmounted(() => {

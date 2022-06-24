@@ -1,4 +1,11 @@
 <script setup>
+import { onMounted } from 'vue';
+
+
+onMounted(() => {
+    const uwu = document.querySelector('.item-carousel');
+    console.log({uwu});
+});
 
 const props = defineProps({
     testimonial: {
@@ -35,6 +42,7 @@ function determineTranslateInX() {
 <style scoped>
 .item-carousel {
     user-select: none;
+    transition: all ease .5s;
 }
 
 .item-carousel img {
