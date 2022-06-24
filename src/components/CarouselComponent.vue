@@ -1,8 +1,11 @@
 <script setup>
-import { onMounted, onUnmounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
+import ButtonComponent from './ButtonComponent.vue';
+import ArrowLeft from './icons/ArrowLeft.vue';
+import ArrowRight from './icons/ArrowRight.vue';
 import ItemCarousel from './ItemCarousel.vue';
-import { getSpecificElementLimits, translateSlideInX, getTranslate3d } from '../utils/HTMLElements';
+import { getSpecificElementLimits, translateSlideInX } from '../utils/HTMLElements';
 
 const testimonials = ref([
     {
@@ -47,9 +50,6 @@ const testimonials = ref([
     },
 ]);
 
-let direction = ref('');
-let oldValueX = ref(null);
-let isMouseClicked = ref(false);
 let containerCarouselWidth = ref(0);
 let isAbsolute = ref(true);
 let carouselSlides = undefined;
@@ -62,67 +62,7 @@ onMounted(() => {
     const { width } = getSpecificElementLimits(containerCarousel);
     containerCarouselWidth.value = width;
     carouselSlides = document.querySelectorAll('.item-carousel.set-position');
-
-  /*   Slides  */
-
-
-    for (let slide of carouselSlides) {
-        slide.style.transition = 'all ease .5s';
-     
-    }
-   
 });
-
-/* onUnmounted(() => {
-    for (let slide of carouselSlides) {
-        slide.removeEventListener('mouseout', mouseIsNotBeingClicked);
-
-        slide.removeEventListener('mousedown', mouseIsBeingClicked);
-
-        slide.removeEventListener('mouseup', mouseIsNotBeingClicked);
-
-        slide.removeEventListener('mousemove', validateMouseMove);
-    }
-});
- */
-
-/**
- * Función ejecutada cuando el usuario deja de hacer clic sobre un slide
- */
-/* function mouseIsNotBeingClicked() {
-    isMouseClicked.value = false;
-    console.log('Document is NOT being clicked');
-} */
-
-/**
- * Función ejecutada cuando el usuario presiona un slide
- */
-/* function mouseIsBeingClicked(e) {
-    isMouseClicked.value = true;
-    console.log('Document is being clicked');
-} */
-
-/**
- * Función ejecutada cuando el usuario mueve el mouse sobre las sliders
- * @param {Object} e - Referencia al objeto que se le añade el eventListener
- */
-/* function validateMouseMove(e) {
-    if (e.pageX < oldValueX.value && isMouseClicked.value) {
-        translateSlideInX(carouselSlides, 'subtract', containerCarouselWidth.value);
-        direction.value = 'left';
-    }
-
-    if (e.pageX > oldValueX.value && isMouseClicked.value) {
-        translateSlideInX(carouselSlides, 'add', containerCarouselWidth.value);
-        direction.value = 'right';
-    }
-
-    if (isMouseClicked.value) {
-        console.log(direction.value);
-    }
-
-    oldValueX.value = e.pageX;
-} */
 
 function moveToLeft() {
     if ((leftCounter.value - 1) < 0) return;
@@ -152,12 +92,12 @@ function moveToRight() {
     leftCounter.value += 1;
     rightCounter.value += 1;
 }
-
 </script>
 
 <template>
     <section id="widget-testimonials">
-        <div class="container position-relative overflow-hidden w-50 " id="container-carousel">
+                  
+        <div class="container position-relative overflow-hidden " id="container-carousel">
             <div style="visibility: hidden;">
                 <ItemCarousel :testimonial="testimonials[0]" :translateX="{ containerCarouselWidth, index: 0 }">
                 </ItemCarousel>
@@ -165,24 +105,38 @@ function moveToRight() {
             <ItemCarousel v-model.isAbsolute="isAbsolute" v-for="(testimonial, index) in testimonials"
                 :key="testimonial.meta.uuid" :testimonial="testimonial" :translateX="{ containerCarouselWidth, index }">
             </ItemCarousel>
-            <div class="dots d-flex justify-content-center pb-3">
-                <button @click="moveToLeft">left</button>
-                <button @click="moveToRight">right</button>
-            </div>
+
+            <!-- Left Arrow -->
+            <button-component @click="moveToLeft" class="button-arrow button-arrow-left">
+                <template #arrow>
+                    <ArrowLeft :leftCounter="leftCounter"/>
+                </template>
+            </button-component>
+
+            <!-- Right arrow -->
+            <button-component  @click="moveToRight" class="button-arrow button-arrow-right">
+                <template #arrow>
+                    <ArrowRight :rightCounter="{rightCounter, maxCounter: testimonials.length}"  />
+                </template>
+            </button-component>
         </div>
     </section>
 </template>
 
 <style scoped>
-.dots {
-    z-index: 99999999;
+.button-arrow {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    display: flex;
 }
 
-.dots span {
-    width: 10px;
-    height: 10px;
-    border-radius: 100%;
-    background-color: rgb(60, 74, 163);
+.button-arrow-right {
+    right: 0;
+}
+
+.button-arrow-left {
+    left: 0;
 }
 
 #container-carousel {

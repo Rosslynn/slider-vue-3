@@ -1,11 +1,4 @@
 <script setup>
-import { onMounted } from 'vue';
-
-
-onMounted(() => {
-    const uwu = document.querySelector('.item-carousel');
-    console.log({uwu});
-});
 
 const props = defineProps({
     testimonial: {
