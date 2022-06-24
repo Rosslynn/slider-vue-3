@@ -36,12 +36,15 @@ function determineTranslateInX() {
 <style scoped>
 .item-carousel {
     user-select: none;
-    cursor: pointer;
-    /* transition: all ease .5s; */
+}
+
+.item-carousel img {
+    pointer-events: none;
 }
 
 .set-position {
     position: absolute;
     top: 0;
+    z-index: -1;
 }
 </style> 
