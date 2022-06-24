@@ -50,19 +50,12 @@ export function translateSlideInX({
     );
   }
 
-  const percentage = Math.floor(containerCarouselWidth * 0.35);
-
   for (let slide of carouselSlides) {
     const [x] = getTranslate3d(slide);
     const [number] = x.split("px");
-    const actualPositionInX = Math.floor(Math.abs(Number(number)));
     let translateXValue =
       Number(number) + Math.floor(containerCarouselWidth * 0.02);
 
-    /* if(actualPositionInX !== 0 && actualPositionInX >= percentage) {
-      console.log('Alcanzo el 10 porciento');
-      break;
-    } */
 
     if (operation === "add") {
       if (isClickedByButton) {

@@ -62,7 +62,7 @@ onMounted(() => {
     const { width } = getSpecificElementLimits(containerCarousel);
     containerCarouselWidth.value = width;
 
-    /* Slides */
+    /* Slides 
     carouselSlides = document.querySelectorAll('.item-carousel.set-position');
 
 
@@ -76,9 +76,10 @@ onMounted(() => {
 
         slide.addEventListener('mousemove', validateMouseMove);
     }
+    */
 });
 
-onUnmounted(() => {
+/* onUnmounted(() => {
     for (let slide of carouselSlides) {
         slide.removeEventListener('mouseout', mouseIsNotBeingClicked);
 
@@ -89,28 +90,29 @@ onUnmounted(() => {
         slide.removeEventListener('mousemove', validateMouseMove);
     }
 });
+ */
 
 /**
  * Función ejecutada cuando el usuario deja de hacer clic sobre un slide
  */
-function mouseIsNotBeingClicked() {
+/* function mouseIsNotBeingClicked() {
     isMouseClicked.value = false;
     console.log('Document is NOT being clicked');
-}
+} */
 
 /**
  * Función ejecutada cuando el usuario presiona un slide
  */
-function mouseIsBeingClicked(e) {
+/* function mouseIsBeingClicked(e) {
     isMouseClicked.value = true;
     console.log('Document is being clicked');
-}
+} */
 
 /**
  * Función ejecutada cuando el usuario mueve el mouse sobre las sliders
  * @param {Object} e - Referencia al objeto que se le añade el eventListener
  */
-function validateMouseMove(e) {
+/* function validateMouseMove(e) {
     if (e.pageX < oldValueX.value && isMouseClicked.value) {
         translateSlideInX(carouselSlides, 'subtract', containerCarouselWidth.value);
         direction.value = 'left';
@@ -126,7 +128,7 @@ function validateMouseMove(e) {
     }
 
     oldValueX.value = e.pageX;
-}
+} */
 
 function moveToLeft() {
     if ((leftCounter.value - 1) < 0) return;
