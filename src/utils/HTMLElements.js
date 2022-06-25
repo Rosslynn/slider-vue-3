@@ -9,6 +9,7 @@ export function getSpecificElementLimits(container) {
   }
 
   try {
+    console.log(container.getBoundingClientRect());
     return container.getBoundingClientRect();
   } catch (error) {
     throw new Error(
